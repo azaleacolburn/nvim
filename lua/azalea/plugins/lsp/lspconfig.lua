@@ -9,7 +9,6 @@ return {
 
 	config = function()
 		local lspconfig = require("lspconfig")
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 		local keymap = vim.keymap
 
@@ -42,10 +41,7 @@ return {
 			keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
 			opts.desc = "Go to previous diagnostic"
-			keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
-
-			opts.desc = "Go to next diagnostic"
-			keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+			keymap.set("n", "[d", vim.diagnostic.jump, opts) -- jump to previous diagnostic in buffer
 
 			opts.desc = "Show documentation for what is under cursor"
 			keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
@@ -56,15 +52,35 @@ return {
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-		for _, diag in ipairs({ "Error", "Warn", "Info", "Hint" }) do
-			vim.fn.sign_define("DiagnosticSign" .. diag, {
-				text = "",
-				texthl = "DiagnosticSign" .. diag,
-				linehl = "",
-				numhl = "DiagnosticSign" .. diag,
-			})
+		local diagnostics = {
+			[vim.diagnostic.severity.ERROR] = { name = "ERROR", text = "󰅙", hl = "DiagnosticSignError" },
+			[vim.diagnostic.severity.WARN] = { name = "WARN", text = "", hl = "DiagnosticSignWarn" },
+			[vim.diagnostic.severity.HINT] = { name = "HINT", text = "", hl = "DiagnosticSignHint" },
+			[vim.diagnostic.severity.INFO] = { name = "INFO", text = "󰋼", hl = "DiagnosticSignInfo" },
+		}
+		local severity = vim.diagnostic.severity
+
+		local signs = {
+			text = {},
+			texthl = {},
+			linehl = {},
+			numhl = {},
+		}
+		for _, level in pairs(diagnostics) do
+			signs.text[severity[level.name]] = ""
+			signs.texthl[severity[level.name]] = level.hl
+			signs.linehl[severity[level.name]] = ""
+			signs.numhl[severity[level.name]] = level.numhl
 		end
+
+		vim.diagnostic.config({ signs = signs, virtual_text = true })
+
 		lspconfig.rust_analyzer.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
+		lspconfig.harper_ls.setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
@@ -93,6 +109,26 @@ return {
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})
+
+		-- vim.lsp.enable("biome")
+		-- lspconfig.biome.setup({
+		-- 	capabilities = capabilities,
+		-- 	on_attach = on_attach,
+		-- 	filetypes = {
+		-- 		"html",
+		-- 		"css",
+		--
+		-- 		"typescript",
+		-- 		"javascript",
+		--
+		-- 		"json",
+		--
+		-- 		"typescriptreact.tsx",
+		-- 		"typescriptreact",
+		-- 		"javascriptreact",
+		-- 		"svelte",
+		-- 	},
+		-- })
 
 		lspconfig.cssls.setup({
 			capabilities = capabilities,
@@ -127,6 +163,11 @@ return {
 		})
 
 		lspconfig.basedpyright.setup({
+			capabilities = capabilities,
+			on_attach = on_attach,
+		})
+
+		lspconfig.protols.setup({
 			capabilities = capabilities,
 			on_attach = on_attach,
 		})

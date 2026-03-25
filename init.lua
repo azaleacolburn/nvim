@@ -1,1 +1,1 @@
-require("lua.lazy")
+require("azalea.lazy")

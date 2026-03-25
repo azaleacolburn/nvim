@@ -7,15 +7,18 @@ return {
 
 		conform.setup({
 			formatters_by_ft = {
-				javascript = { { "prettier", "prettierd" } },
-				typescript = { { "prettier", "prettierd" } },
-				svelte = { { "prettier", "prettierd" } },
-				html = { { "prettier", "prettierd" } },
-				css = { { "prettier", "prettierd" } },
-				markdown = { { "prettier", "prettierd" } },
-				json = { { "prettier", "prettierd" } },
-				yaml = { { "prettier", "prettierd" } },
-				toml = { { "prettier", "prettierd" } },
+				javascript = { { "biome" } },
+				typescript = { { "biome" } },
+				typescriptreact = { { "biome" } },
+				javascriptreact = { { "biome" } },
+				svelte = { { "biome" } },
+				html = { { "biome" } },
+				css = { { "biome" } },
+				json = { { "biome" } },
+
+				markdown = { { "prettierd" } },
+				yaml = { { "prettierd" } },
+				toml = { { "prettierd" } },
 				lua = { "stylua" },
 				rust = { "rustfmt" },
 				c = { "clang-format" },

@@ -22,11 +22,13 @@ vim.opt.runtimepath:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-require("lazy").setup({ { import = "plugins" }, { import = "plugins.lsp" } })
+require("lazy").setup({ { import = "azalea.plugins" }, { import = "azalea.plugins.lsp" } })
 
-vim.cmd([[colorscheme nord]])
+-- vim.g.nord_disable_background = false
+require("everforest").load()
 
 vim.g.netrw_liststyle = 1
+vim.g.neovide_fullscreen = true
 
 vim.o.tabstop = 4 -- A TAB character looks like 4 spaces
 vim.o.expandtab = true -- Pressing the TAB key will insert spaces instead of a TAB character
@@ -56,20 +58,22 @@ vim.api.nvim_set_hl(0, "Comment", { fg = "#9fa2bd" })
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextError", { bg = "NONE" })
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextHint", { bg = "NONE" })
 vim.api.nvim_set_hl(0, "DiagnosticVirtualTextWarn", { bg = "NONE" })
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "netrw",
 	command = "setlocal nocursorline",
 })
 -- Stray Keymaps
 local opts = { noremap = true, silent = true }
-vim.keymap.set({ "n", "v" }, "l", "b", opts)
-vim.keymap.set({ "n", "v" }, "L", "B", opts)
-vim.keymap.set({ "n", "v" }, "b", "l", opts)
-vim.keymap.set({ "n", "v" }, "B", "L", opts)
+
+vim.keymap.set("n", "t", "c", opts)
+vim.keymap.set("n", "c", "t", opts)
+vim.keymap.set("v", "t", "c", opts)
+vim.keymap.set("v", "c", "t", opts)
 
 vim.keymap.set("n", "<leader>o", "<C-o>", opts)
-vim.keymap.set("n", "<leader>e", ":Explore<cr>", opts)
-vim.keymap.set("n", "<leader>w", ":w<cr>", opts)
+vim.keymap.set("n", "<leader>e", "<cmd>Explore<cr>", opts)
+vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", opts)
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function()

@@ -11,7 +11,6 @@ return {
 				enable = true,
 			},
 			-- enable indentation
-			indent = { enable = true },
 			ensure_installed = {
 				"json",
 				"javascript",
@@ -30,6 +29,7 @@ return {
 				"gitignore",
 				"vimdoc",
 				"luadoc",
+				"regex",
 			},
 		})
 	end,

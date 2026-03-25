@@ -1,8 +1,8 @@
 return {
-	"williamboman/mason.nvim",
+	"mason-org/mason.nvim",
 	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
-		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		"mason-org/mason-lspconfig.nvim",
+		"mason-org/mason-tool-installer.nvim",
 	},
 	config = function()
 		-- import mason
@@ -27,6 +27,7 @@ return {
 		mason_lspconfig.setup({
 			-- list of servers for mason to install
 			ensure_installed = {
+				"biome",
 				"tsserver",
 				"html",
 				"cssls",
@@ -37,6 +38,7 @@ return {
 				"emmet_language_server",
 				"basedpyright",
 				"rust_analyzer",
+				"harper_ls",
 				"marksman",
 			},
 			-- auto-install configured servers (with lspconfig)
@@ -45,7 +47,8 @@ return {
 
 		mason_tool_installer.setup({
 			ensure_installed = {
-				"prettier", -- prettier formatter
+				"biome", -- biome formatter
+				"prettierd",
 				"stylua", -- lua formatter
 				"isort", -- python formatter
 				"black", -- python formatter
